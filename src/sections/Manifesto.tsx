@@ -39,16 +39,17 @@ export default function Manifesto() {
     >
       <div
         ref={pinRef}
-        className="h-auto py-20 md:py-32 flex items-center justify-center overflow-hidden px-[2vw]"
+        className="h-auto py-16 md:py-24 flex items-center justify-center overflow-visible px-[2vw]"
       >
         <div className="max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw]">
           <div
-            className="font-serif animate-fade-in-up"
+            className="font-serif"
             style={{
-              fontSize: 'clamp(1.5rem, 5vw, 3rem)',
-              lineHeight: 1.4,
+              fontSize: 'clamp(1.25rem, 4vw, 2.5rem)',
+              lineHeight: 1.5,
               color: 'var(--text-primary)',
               textAlign: 'center',
+              fontWeight: 400,
             }}
           >
             {lines.map((line, i) => (
@@ -57,7 +58,7 @@ export default function Manifesto() {
                 ref={(el) => {
                   if (el) linesRef.current[i] = el;
                 }}
-                className="block transition-all duration-700"
+                className="block"
                 style={{ 
                   opacity: 1,
                   letterSpacing: '-0.01em',
