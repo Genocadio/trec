@@ -46,11 +46,14 @@
   body {
     font-family: 'Manrope', sans-serif;
     background: linear-gradient(135deg, 
-      #f5f5f5 0%,
-      #fafbfc 25%,
-      #f7f9fa 50%,
-      #f5f5f5 75%,
-      #f2f4f6 100%);
+      #f0f4f8 0%,
+      #e8f1f7 15%,
+      #f5f7fc 30%,
+      #f0f9ff 45%,
+      #f9f5f0 60%,
+      #faf7f2 75%,
+      #f5f3f0 90%,
+      #eff5fa 100%);
     background-attachment: fixed;
     color: var(--text-primary);
     overflow-x: hidden;
