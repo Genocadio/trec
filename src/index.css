@@ -1,0 +1,191 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #f5f5f5;
+    --bg-dark: #050505;
+    --text-primary: #111111;
+    --text-secondary: #555555;
+    --accent-orange: #ff4d00;
+    --border-light: rgba(17, 17, 17, 0.15);
+
+    --background: 0 0% 96%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 0% 7%;
+    --primary-foreground: 0 0% 96%;
+    --secondary: 0 0% 33%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 33%;
+    --accent: 18 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: 18 100% 50%;
+    --radius: 0rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Instrument Serif', serif;
+  }
+}
+
+@layer components {
+  .font-serif {
+    font-family: 'Instrument Serif', serif;
+  }
+
+  .font-sans {
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .text-display {
+    font-size: clamp(4rem, 10vw, 12rem);
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+  }
+
+  .text-h2 {
+    font-size: clamp(3rem, 6vw, 7rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .text-h3 {
+    font-size: clamp(1.5rem, 2vw, 2.5rem);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .text-body {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .text-ui {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 36px;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+  }
+
+  .btn-pill-primary {
+    background-color: var(--accent-orange);
+    color: white;
+    border: 1px solid var(--accent-orange);
+  }
+
+  .btn-pill-primary:hover {
+    background-color: transparent;
+    color: var(--accent-orange);
+  }
+
+  .btn-pill-outline {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+  }
+
+  .btn-pill-outline:hover {
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@layer utilities {
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(17, 17, 17, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(17, 17, 17, 0.4);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--accent-orange);
+  color: white;
+}
