@@ -63,33 +63,28 @@ export default function Projects() {
 
     const triggers: ScrollTrigger[] = [];
 
-    // Featured image animation
+    // Featured image animation - smooth entrance without scaling
     const tl1 = gsap.timeline({
       scrollTrigger: {
         trigger: featured,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-        pin: true,
+        start: 'top 70%',
+        end: 'top 20%',
+        scrub: false,
       },
     });
 
-    tl1.to(imageEl, {
-      scale: 1.05,
-      duration: 1,
+    tl1.from(imageEl, {
+      opacity: 0,
+      scale: 0.98,
+      duration: 1.2,
+      ease: 'power2.out',
     }, 0);
 
     tl1.to(imageEl, {
-      xPercent: 40,
-      duration: 1,
-      ease: 'power1.inOut',
-    }, 0.5);
-
-    tl1.to(imageEl, {
       clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-      duration: 1,
-      ease: 'power1.inOut',
-    }, 0.5);
+      duration: 0.8,
+      ease: 'power2.out',
+    }, 0.2);
 
     if (tl1.scrollTrigger) triggers.push(tl1.scrollTrigger);
 
