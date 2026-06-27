@@ -104,7 +104,7 @@ const fragmentShader = `
       col += vec3(0.06, 0.55, 0.68) * fresnel * 0.5;
       gl_FragColor = vec4(col, 1.0);
     } else {
-      gl_FragColor = vec4(0.95, 0.95, 0.95, 1.0);
+      gl_FragColor = vec4(0.92, 0.93, 0.94, 1.0);
     }
   }
 `;
@@ -186,38 +186,52 @@ export default function OrangeCurve() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full overflow-hidden"
-      style={{ height: '120vh', backgroundColor: 'var(--bg-primary)' }}
+      className="relative w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+      style={{ height: '100vh' }}
     >
-      {/* WebGL Canvas */}
+      {/* WebGL Canvas - subtle background */}
       <div
         ref={canvasRef}
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-40"
         style={{ zIndex: 1 }}
+      />
+
+      {/* Dark overlay for text visibility */}
+      <div
+        className="absolute inset-0"
+        style={{
+          zIndex: 1.5,
+          background: 'linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.4) 100%)',
+        }}
       />
 
       {/* Overlay text */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none animate-fade-in-up"
-        style={{ zIndex: 2, animationDelay: '0.3s' }}
+        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+        style={{ zIndex: 2 }}
       >
         <h2
-          className="font-serif text-h2 text-center text-2xl md:text-4xl lg:text-6xl px-[2vw]"
+          className="font-serif text-h2 text-center text-2xl md:text-4xl lg:text-6xl px-[2vw] max-w-4xl animate-fade-in-down"
           style={{
-            color: 'var(--text-primary)',
-            textShadow: '0 0 40px rgba(245, 245, 245, 0.8)',
+            color: '#ffffff',
+            textShadow: '0 6px 24px rgba(0, 0, 0, 0.6), 0 0 50px rgba(15, 139, 174, 0.4)',
+            letterSpacing: '-0.01em',
+            lineHeight: 1.2,
+            animationDelay: '0.1s',
           }}
         >
-          DEFINING LANDMARKS
+          We build spaces that define the skyline of Kigali
         </h2>
         <p
-          className="font-sans text-ui mt-4 md:mt-6 text-xs md:text-sm"
+          className="font-sans text-ui mt-4 md:mt-8 text-xs md:text-base max-w-2xl px-[2vw] animate-fade-in-up"
           style={{
-            color: 'var(--text-secondary)',
-            textShadow: '0 0 20px rgba(245, 245, 245, 0.8)',
+            color: '#ffffff',
+            textShadow: '0 3px 12px rgba(0, 0, 0, 0.6)',
+            fontWeight: 300,
+            animationDelay: '0.3s',
           }}
         >
-          Since 2008
+          From ground-breaking foundations to waterproofing precision, our mission is structural excellence.
         </p>
       </div>
     </section>
