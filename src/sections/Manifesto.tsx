@@ -35,7 +35,11 @@ export default function Manifesto() {
     <section
       id="about"
       ref={sectionRef}
-      style={{ minHeight: 'auto', backgroundColor: 'var(--bg-primary)' }}
+      style={{ 
+        minHeight: 'auto',
+        background: 'linear-gradient(135deg, #f0f6fb 0%, #e8f2f9 25%, #f5f9fc 50%, #eef6fa 75%, #f2f8fb 100%)',
+        backdropFilter: 'blur(4px)',
+      }}
     >
       <div
         ref={pinRef}
