@@ -99,9 +99,9 @@ const fragmentShader = `
       float diff = max(dot(n, lightDir), 0.0);
       float ambient = 0.3;
       float lighting = ambient + diff * 0.7;
-      vec3 col = vec3(1.0, 0.3, 0.0) * lighting;
+      vec3 col = vec3(0.06, 0.55, 0.68) * lighting;
       float fresnel = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);
-      col += vec3(1.0, 0.5, 0.2) * fresnel * 0.5;
+      col += vec3(0.06, 0.55, 0.68) * fresnel * 0.5;
       gl_FragColor = vec4(col, 1.0);
     } else {
       gl_FragColor = vec4(0.95, 0.95, 0.95, 1.0);
@@ -198,11 +198,11 @@ export default function OrangeCurve() {
 
       {/* Overlay text */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
-        style={{ zIndex: 2 }}
+        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none animate-fade-in-up"
+        style={{ zIndex: 2, animationDelay: '0.3s' }}
       >
         <h2
-          className="font-serif text-h2 text-center"
+          className="font-serif text-h2 text-center text-2xl md:text-4xl lg:text-6xl px-[2vw]"
           style={{
             color: 'var(--text-primary)',
             textShadow: '0 0 40px rgba(245, 245, 245, 0.8)',
@@ -211,7 +211,7 @@ export default function OrangeCurve() {
           DEFINING LANDMARKS
         </h2>
         <p
-          className="font-sans text-ui mt-6"
+          className="font-sans text-ui mt-4 md:mt-6 text-xs md:text-sm"
           style={{
             color: 'var(--text-secondary)',
             textShadow: '0 0 20px rgba(245, 245, 245, 0.8)',

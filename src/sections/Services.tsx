@@ -187,8 +187,8 @@ export default function Services() {
       className="relative w-full overflow-hidden"
       style={{
         backgroundColor: 'var(--bg-dark)',
-        paddingTop: '15vh',
-        paddingBottom: '15vh',
+        paddingTop: '10vh',
+        paddingBottom: '10vh',
       }}
     >
       {/* Background dot grid canvas */}
@@ -199,23 +199,23 @@ export default function Services() {
       />
 
       <div className="relative px-[2vw]" style={{ zIndex: 1 }}>
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           {/* Left: Title */}
-          <div className="lg:w-2/5 flex flex-col justify-center">
+          <div className="lg:w-2/5 flex flex-col justify-center animate-fade-in-left" style={{ animationDelay: '0.2s' }}>
             <p
-              className="text-ui mb-6"
+              className="text-ui mb-4 md:mb-6"
               style={{ color: 'rgba(255, 255, 255, 0.5)' }}
             >
               Our Services
             </p>
             <h2
-              className="font-serif text-h2 mb-8"
+              className="font-serif text-h2 mb-6 md:mb-8 text-3xl md:text-5xl lg:text-6xl"
               style={{ color: 'white' }}
             >
               Comprehensive Property Services
             </h2>
             <p
-              className="text-body mb-10 max-w-md"
+              className="text-body mb-8 md:mb-10 max-w-md text-sm md:text-base"
               style={{ color: 'rgba(255, 255, 255, 0.6)' }}
             >
               From concept to completion, we deliver excellence across every
@@ -227,7 +227,7 @@ export default function Services() {
           </div>
 
           {/* Right: Dashboard */}
-          <div className="lg:w-3/5 relative">
+          <div className="lg:w-3/5 relative animate-fade-in-right" style={{ animationDelay: '0.4s' }}>
             {/* 3D Carousel */}
             <div
               className="relative mb-12"
@@ -286,9 +286,9 @@ export default function Services() {
             </div>
 
             {/* Data panels */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               {/* Metrics */}
-              <div className="glass-panel p-6">
+              <div className="glass-panel p-4 md:p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <TrendingUp size={16} style={{ color: 'var(--accent-orange)' }} />
                   <span

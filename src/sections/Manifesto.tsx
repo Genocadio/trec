@@ -76,14 +76,14 @@ export default function Manifesto() {
     >
       <div
         ref={pinRef}
-        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
+        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden px-[2vw]"
       >
-        <div className="px-[2vw] max-w-[70vw] md:max-w-[60vw]">
+        <div className="max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw]">
           <div
             className="font-serif"
             style={{
-              fontSize: 'clamp(2rem, 6vh, 5rem)',
-              lineHeight: 1.2,
+              fontSize: 'clamp(1.5rem, 5vw, 4rem)',
+              lineHeight: 1.3,
               color: 'var(--text-primary)',
             }}
           >
@@ -93,8 +93,11 @@ export default function Manifesto() {
                 ref={(el) => {
                   if (el) linesRef.current[i] = el;
                 }}
-                className="block"
-                style={{ opacity: 0.08 }}
+                className="block transition-all duration-700"
+                style={{ 
+                  opacity: 0.08,
+                  letterSpacing: '-0.01em',
+                }}
               >
                 {line}
               </span>

@@ -8,7 +8,9 @@
     --bg-dark: #050505;
     --text-primary: #111111;
     --text-secondary: #555555;
-    --accent-orange: #ff4d00;
+    --accent-orange: #0F8BAE;
+    --accent-light: #17A2B8;
+    --accent-dark: #0D5F7A;
     --border-light: rgba(17, 17, 17, 0.15);
 
     --background: 0 0% 96%;
@@ -23,13 +25,13 @@
     --secondary-foreground: 0 0% 96%;
     --muted: 0 0% 90%;
     --muted-foreground: 0 0% 33%;
-    --accent: 18 100% 50%;
+    --accent: 197 85% 39%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 85%;
     --input: 0 0% 85%;
-    --ring: 18 100% 50%;
+    --ring: 197 85% 39%;
     --radius: 0rem;
   }
 
@@ -163,6 +165,119 @@
   }
   .animation-delay-500 {
     animation-delay: 500ms;
+  }
+}
+
+@layer base {
+  /* Smooth entrance animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(15, 139, 174, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(15, 139, 174, 0.6);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in-down {
+    animation: fadeInDown 0.8s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.8s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
   }
 }
 

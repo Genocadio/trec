@@ -144,7 +144,7 @@ export default function Projects() {
       }}
     >
       {/* Section header */}
-      <div className="px-[2vw] mb-16">
+      <div className="px-[2vw] mb-12 md:mb-16 animate-fade-in-down" style={{ animationDelay: '0.2s' }}>
         <p
           className="text-ui mb-4"
           style={{ color: 'var(--text-secondary)' }}
@@ -152,7 +152,7 @@ export default function Projects() {
           Featured Work
         </p>
         <h2
-          className="font-serif text-h2"
+          className="font-serif text-h2 text-3xl md:text-5xl lg:text-6xl"
           style={{ color: 'var(--text-primary)' }}
         >
           Our Projects
@@ -163,7 +163,7 @@ export default function Projects() {
       <div
         ref={featuredRef}
         className="relative w-full overflow-hidden"
-        style={{ height: '100vh' }}
+        style={{ height: '60vh', minHeight: '500px' }}
       >
         <div
           ref={featuredImageRef}
@@ -177,7 +177,7 @@ export default function Projects() {
         {/* Overlay card */}
         <div
           ref={overlayRef}
-          className="absolute bottom-12 left-[2vw] max-w-lg p-8"
+          className="absolute bottom-4 md:bottom-12 left-[2vw] max-w-lg p-5 md:p-8"
           style={{
             backgroundColor: 'rgba(245, 245, 245, 0.95)',
             backdropFilter: 'blur(10px)',
@@ -185,24 +185,24 @@ export default function Projects() {
           }}
         >
           <span
-            className="text-ui"
-            style={{ color: 'var(--accent-orange)', fontSize: '11px' }}
+            className="text-ui text-xs md:text-sm"
+            style={{ color: 'var(--accent-orange)', fontSize: '10px' }}
           >
             {projects[0].category}
           </span>
           <h3
-            className="font-serif text-h3 mt-2 mb-4"
+            className="font-serif text-h3 mt-2 md:mt-3 mb-3 md:mb-4 text-lg md:text-2xl lg:text-3xl"
             style={{ color: 'var(--text-primary)' }}
           >
             {projects[0].title}
           </h3>
           <p
-            className="text-body mb-6"
-            style={{ color: 'var(--text-secondary)', fontSize: '16px' }}
+            className="text-body mb-4 md:mb-6 text-sm md:text-base"
+            style={{ color: 'var(--text-secondary)', fontSize: '14px' }}
           >
             {projects[0].description}
           </p>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
             <div className="flex items-center gap-2">
               <MapPin size={14} style={{ color: 'var(--text-secondary)' }} />
               <span
@@ -227,10 +227,10 @@ export default function Projects() {
 
       {/* Project grid */}
       <div
-        className="px-[2vw] py-24"
+        className="px-[2vw] py-16 md:py-24"
         style={{ backgroundColor: 'var(--bg-primary)' }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {projects.slice(1).map((project, i) => (
             <div
               key={i}
@@ -238,8 +238,9 @@ export default function Projects() {
                 if (el) cardsRef.current[i] = el;
               }}
               className="group cursor-pointer"
+              style={{ opacity: 0 }}
             >
-              <div className="relative overflow-hidden mb-6" style={{ aspectRatio: '16/10' }}>
+              <div className="relative overflow-hidden mb-4 md:mb-6" style={{ aspectRatio: '16/10' }}>
                 <img
                   src={project.image}
                   alt={project.title}
@@ -250,30 +251,30 @@ export default function Projects() {
                   style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
                 >
                   <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center"
+                    className="w-12 md:w-14 h-12 md:h-14 rounded-full flex items-center justify-center"
                     style={{ backgroundColor: 'var(--accent-orange)' }}
                   >
-                    <ArrowUpRight size={24} color="white" />
+                    <ArrowUpRight size={20} color="white" />
                   </div>
                 </div>
                 <div
-                  className="absolute top-4 left-4 px-3 py-1"
+                  className="absolute top-3 md:top-4 left-3 md:left-4 px-2 md:px-3 py-1"
                   style={{
                     backgroundColor: 'var(--accent-orange)',
                   }}
                 >
-                  <span className="text-ui" style={{ color: 'white', fontSize: '10px' }}>
+                  <span className="text-ui text-xs" style={{ color: 'white', fontSize: '9px' }}>
                     {project.category}
                   </span>
                 </div>
               </div>
               <h3
-                className="font-serif text-xl mb-2 group-hover:translate-x-2 transition-transform duration-300"
+                className="font-serif text-lg md:text-xl mb-2 group-hover:translate-x-2 transition-transform duration-300"
                 style={{ color: 'var(--text-primary)' }}
               >
                 {project.title}
               </h3>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
                 <div className="flex items-center gap-1">
                   <MapPin size={12} style={{ color: 'var(--text-secondary)' }} />
                   <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>

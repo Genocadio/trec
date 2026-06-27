@@ -280,10 +280,11 @@ export default function Hero() {
       {/* Massive background text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
         <h1
-          className="font-serif text-display"
+          className="font-serif text-display animate-fade-in-down"
           style={{
-            color: 'rgba(17, 17, 17, 0.04)',
-            fontSize: 'clamp(8rem, 22vw, 22rem)',
+            color: 'rgba(15, 139, 174, 0.08)',
+            fontSize: 'clamp(6rem, 22vw, 22rem)',
+            animationDelay: '0.2s',
           }}
         >
           TREC
@@ -299,22 +300,26 @@ export default function Hero() {
 
       {/* Content overlay */}
       <div
-        className="absolute bottom-0 left-0 w-full px-[2vw] pb-16 md:pb-24"
+        className="absolute bottom-0 left-0 w-full px-[2vw] pb-12 md:pb-16 lg:pb-24"
         style={{ zIndex: 10 }}
       >
         <div className="max-w-4xl">
           <p
-            className="font-sans text-ui mb-6"
-            style={{ color: 'var(--text-secondary)' }}
+            className="font-sans text-ui mb-4 md:mb-6 animate-fade-in-up"
+            style={{ 
+              color: 'var(--text-secondary)',
+              animationDelay: '0.4s',
+            }}
           >
             Talent Real Estate Company Ltd
           </p>
           <h2
-            className="font-sans text-2xl md:text-4xl font-light mb-8"
+            className="font-sans text-xl md:text-3xl lg:text-4xl font-light mb-6 md:mb-8 animate-fade-in-up"
             style={{
               color: 'var(--text-primary)',
               letterSpacing: '-0.01em',
               lineHeight: 1.2,
+              animationDelay: '0.6s',
             }}
           >
             Architectural Execution &amp; Consultancy
@@ -325,7 +330,8 @@ export default function Hero() {
               e.preventDefault();
               document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="btn-pill btn-pill-primary"
+            className="btn-pill btn-pill-primary animate-scale-in inline-block"
+            style={{ animationDelay: '0.8s' }}
           >
             Explore Projects
           </a>
@@ -334,11 +340,11 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <div
-        className="absolute bottom-8 right-[2vw] flex flex-col items-center gap-2"
+        className="absolute bottom-6 md:bottom-8 right-[2vw] flex flex-col items-center gap-2 animate-float"
         style={{ zIndex: 10 }}
       >
         <span
-          className="text-ui"
+          className="text-ui text-xs md:text-sm"
           style={{
             color: 'var(--text-secondary)',
             writingMode: 'vertical-rl',
@@ -347,7 +353,7 @@ export default function Hero() {
           Scroll
         </span>
         <div
-          className="w-[1px] h-12 animate-pulse"
+          className="w-[1px] h-8 md:h-12 animate-pulse"
           style={{ backgroundColor: 'var(--accent-orange)' }}
         />
       </div>
