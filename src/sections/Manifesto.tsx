@@ -12,45 +12,8 @@ export default function Manifesto() {
   const linesRef = useRef<HTMLSpanElement[]>([]);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    const pinWrapper = pinRef.current;
-    const lines = linesRef.current.filter(Boolean);
-    if (!section || !pinWrapper || lines.length === 0) return;
-
-    // Set initial state
-    gsap.set(lines, { opacity: 0.08 });
-
-    const triggers: ScrollTrigger[] = [];
-
-    lines.forEach((line, i) => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top center',
-          end: '+=200%',
-          pin: pinWrapper,
-          scrub: 1,
-        },
-      });
-
-      tl.to(
-        line,
-        {
-          opacity: 1,
-          duration: 0.3,
-          ease: 'none',
-        },
-        i * 0.15
-      );
-
-      if (tl.scrollTrigger) {
-        triggers.push(tl.scrollTrigger);
-      }
-    });
-
-    return () => {
-      triggers.forEach((st) => st.kill());
-    };
+    // Animation is handled by CSS class, no GSAP needed
+    return () => {};
   }, []);
 
   // Split text into lines (roughly 4-6 words per line)
@@ -72,19 +35,25 @@ export default function Manifesto() {
     <section
       id="about"
       ref={sectionRef}
-      style={{ minHeight: '200vh', backgroundColor: 'var(--bg-primary)' }}
+      style={{ 
+        minHeight: 'auto',
+        background: 'linear-gradient(135deg, #f0f6fb 0%, #e8f2f9 25%, #f5f9fc 50%, #eef6fa 75%, #f2f8fb 100%)',
+        backdropFilter: 'blur(4px)',
+      }}
     >
       <div
         ref={pinRef}
-        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
+        className="h-auto py-16 md:py-24 flex items-center justify-center overflow-visible px-[2vw]"
       >
-        <div className="px-[2vw] max-w-[70vw] md:max-w-[60vw]">
+        <div className="max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw]">
           <div
             className="font-serif"
             style={{
-              fontSize: 'clamp(2rem, 6vh, 5rem)',
-              lineHeight: 1.2,
+              fontSize: 'clamp(1.25rem, 4vw, 2.5rem)',
+              lineHeight: 1.5,
               color: 'var(--text-primary)',
+              textAlign: 'center',
+              fontWeight: 400,
             }}
           >
             {lines.map((line, i) => (
@@ -94,7 +63,10 @@ export default function Manifesto() {
                   if (el) linesRef.current[i] = el;
                 }}
                 className="block"
-                style={{ opacity: 0.08 }}
+                style={{ 
+                  opacity: 1,
+                  letterSpacing: '-0.01em',
+                }}
               >
                 {line}
               </span>

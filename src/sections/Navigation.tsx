@@ -35,10 +35,10 @@ export default function Navigation() {
       ref={navRef}
       className="fixed top-0 left-0 w-full z-50 transition-all duration-500"
       style={{
-        backgroundColor: scrolled ? 'rgba(245, 245, 245, 0.85)' : 'transparent',
+        backgroundColor: scrolled ? 'rgba(240, 246, 251, 0.85)' : 'transparent',
         backdropFilter: scrolled ? 'blur(10px)' : 'none',
         WebkitBackdropFilter: scrolled ? 'blur(10px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(17, 17, 17, 0.08)' : '1px solid transparent',
+        borderBottom: scrolled ? '1px solid rgba(15, 139, 174, 0.1)' : '1px solid transparent',
       }}
     >
       <div className="flex items-center justify-between px-[2vw] py-5">

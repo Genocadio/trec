@@ -35,11 +35,11 @@ export default function Footer() {
       }}
     >
       {/* Large brand text */}
-      <div className="px-[2vw] py-16 overflow-hidden">
+      <div className="px-[2vw] py-12 md:py-16 overflow-hidden">
         <h2
           className="font-serif select-none"
           style={{
-            fontSize: 'clamp(5rem, 15vw, 16rem)',
+            fontSize: 'clamp(3rem, 12vw, 14rem)',
             lineHeight: 0.85,
             letterSpacing: '-0.03em',
             color: 'var(--text-primary)',
@@ -51,18 +51,18 @@ export default function Footer() {
       </div>
 
       {/* Footer content */}
-      <div className="px-[2vw] pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+      <div className="px-[2vw] pb-8 md:pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-12 md:mb-16">
           {/* Brand column */}
           <div className="lg:col-span-2">
             <h3
-              className="font-serif text-2xl mb-4"
+              className="font-serif text-xl md:text-2xl mb-3 md:mb-4"
               style={{ color: 'var(--text-primary)' }}
             >
               TREC
             </h3>
             <p
-              className="text-sm mb-6 max-w-sm"
+              className="text-xs md:text-sm mb-4 md:mb-6 max-w-sm"
               style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}
             >
               Talent Real Estate Company Ltd. Building Kigali&apos;s skyline
@@ -70,7 +70,7 @@ export default function Footer() {
               since 2008.
             </p>
             <p
-              className="text-sm"
+              className="text-xs md:text-sm"
               style={{ color: 'var(--text-secondary)' }}
             >
               Anglican Building, 1st Floor
@@ -85,17 +85,17 @@ export default function Footer() {
           {footerLinks.map((group, i) => (
             <div key={i}>
               <h4
-                className="text-ui mb-6"
-                style={{ color: 'var(--text-primary)', fontSize: '12px' }}
+                className="text-ui mb-4 md:mb-6"
+                style={{ color: 'var(--text-primary)', fontSize: '10px' }}
               >
                 {group.title}
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2 md:space-y-3">
                 {group.links.map((link, j) => (
                   <li key={j}>
                     <a
                       href="#"
-                      className="text-sm transition-colors duration-300 hover:translate-x-1 inline-block"
+                      className="text-xs md:text-sm transition-colors duration-300 hover:translate-x-1 inline-block"
                       style={{ color: 'var(--text-secondary)' }}
                       onClick={(e) => e.preventDefault()}
                       onMouseEnter={(e) => {
@@ -116,7 +116,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div
-          className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8"
+          className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4 pt-6 md:pt-8"
           style={{ borderTop: '1px solid var(--border-light)' }}
         >
           <p
@@ -128,7 +128,7 @@ export default function Footer() {
           <button
             onClick={scrollToTop}
             className="flex items-center gap-2 text-ui transition-colors duration-300"
-            style={{ color: 'var(--text-secondary)', fontSize: '11px' }}
+            style={{ color: 'var(--text-secondary)', fontSize: '10px' }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.color = 'var(--accent-orange)';
             }}
@@ -137,7 +137,7 @@ export default function Footer() {
             }}
           >
             Back to top
-            <ArrowUp size={14} />
+            <ArrowUp size={12} />
           </button>
         </div>
       </div>
