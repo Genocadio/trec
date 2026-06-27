@@ -1,6 +1,6 @@
 import Navigation from '../sections/Navigation';
 import Hero from '../sections/Hero';
-import Manifesto from '../sections/Manifesto';
+// import Manifesto from '../sections/Manifesto';
 import OrangeCurve from '../sections/OrangeCurve';
 import Services from '../sections/Services';
 import Projects from '../sections/Projects';
