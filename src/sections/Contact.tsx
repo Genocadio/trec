@@ -61,18 +61,18 @@ export default function Contact() {
     {
       icon: Phone,
       label: 'Phone',
-      value: '+250 788 123 456\n+250 789 987 654',
+      value: '+250 788 303 809',
     },
     {
       icon: Mail,
       label: 'Email',
-      value: 'info@trec-rwanda.com\nsales@trec-rwanda.com',
+      value: 'muignason23@gmail.com',
     },
-    {
-      icon: Clock,
-      label: 'Working Hours',
-      value: 'Monday - Friday: 8:00 - 18:00\nSaturday: 9:00 - 14:00',
-    },
+    // {
+    //   icon: Clock,
+    //   label: 'Working Hours',
+    //   value: 'Monday - Friday: 8:00 - 18:00\nSaturday: 9:00 - 14:00',
+    // },
   ];
 
   return (
