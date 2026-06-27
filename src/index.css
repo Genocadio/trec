@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --bg-primary: #f5f5f5;
+    --bg-primary: linear-gradient(135deg, #f0f6fb 0%, #e8f2f9 15%, #f5f9fc 30%, #eef4fa 45%, #f2f8fb 60%, #eff6fb 75%, #f5f9fc 90%, #eef6fa 100%);
     --bg-dark: #050505;
     --text-primary: #111111;
     --text-secondary: #555555;
