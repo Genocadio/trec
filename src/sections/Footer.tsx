@@ -66,8 +66,7 @@ export default function Footer() {
               style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}
             >
               Talent Real Estate Company Ltd. Building Kigali&apos;s skyline
-              with precision, expertise, and unwavering commitment to quality
-              since 2008.
+              with precision, expertise, and unwavering commitment to quality.
             </p>
             <p
               className="text-xs md:text-sm"
