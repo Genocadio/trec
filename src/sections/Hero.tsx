@@ -111,9 +111,9 @@ export default function Hero() {
         </h1>
       </div>
 
-      <div className="relative flex items-center justify-between h-full px-[2vw]" style={{ zIndex: 10 }}>
-        {/* Left Content */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center max-w-xl">
+      <div className="relative flex items-center justify-center h-full px-[2vw]" style={{ zIndex: 10 }}>
+        {/* Centered Content */}
+        <div className="w-full flex flex-col justify-center items-center text-center max-w-3xl">
           <p
             className="text-ui mb-4 md:mb-6 animate-fade-in-up"
             style={{
@@ -140,169 +140,129 @@ export default function Hero() {
           </h2>
 
           <p
-            className="text-body mb-8 md:mb-10 animate-fade-in-up"
+            className="text-body mb-10 md:mb-14 animate-fade-in-up"
             style={{
               color: 'var(--text-secondary)',
-              fontSize: '15px',
-              lineHeight: 1.6,
+              fontSize: '16px',
+              lineHeight: 1.7,
               animationDelay: '0.4s',
-              maxWidth: '450px',
+              maxWidth: '700px',
             }}
           >
-            With over 15 years of experience, TREC delivers comprehensive real estate and construction solutions across Rwanda. From project execution to expert consultancy, we build properties that define communities.
+            TREC delivers comprehensive real estate and construction solutions across Rwanda. From visionary project execution to expert consultancy, we craft properties that define communities and inspire generations.
           </p>
 
           {/* Key highlights */}
           <div
-            className="grid grid-cols-2 gap-4 mb-8 md:mb-12 animate-fade-in-up"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-10 md:mb-14 animate-fade-in-up w-full px-4 md:px-0"
             style={{ animationDelay: '0.5s' }}
           >
-            <div className="flex items-start gap-3">
+            <div className="flex flex-col items-center gap-3">
               <div
-                className="flex-shrink-0 mt-1"
+                className="flex-shrink-0"
                 style={{
-                  width: '24px',
-                  height: '24px',
+                  width: '44px',
+                  height: '44px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '4px',
+                  borderRadius: '8px',
                   backgroundColor: 'rgba(255, 77, 0, 0.1)',
                 }}
               >
-                <Building2 size={14} style={{ color: 'var(--accent-orange)' }} />
+                <Building2 size={22} style={{ color: 'var(--accent-orange)' }} />
               </div>
-              <div>
-                <p
-                  style={{
-                    color: 'var(--text-primary)',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    marginBottom: '2px',
-                  }}
-                >
-                  200+ Projects
-                </p>
-                <p
-                  style={{
-                    color: 'var(--text-secondary)',
-                    fontSize: '12px',
-                  }}
-                >
-                  Completed Successfully
-                </p>
-              </div>
+              <p
+                style={{
+                  color: 'var(--text-primary)',
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  lineHeight: 1.4,
+                }}
+              >
+                Strategic Design
+              </p>
             </div>
 
-            <div className="flex items-start gap-3">
+            <div className="flex flex-col items-center gap-3">
               <div
-                className="flex-shrink-0 mt-1"
+                className="flex-shrink-0"
                 style={{
-                  width: '24px',
-                  height: '24px',
+                  width: '44px',
+                  height: '44px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '4px',
+                  borderRadius: '8px',
                   backgroundColor: 'rgba(255, 77, 0, 0.1)',
                 }}
               >
-                <Shield size={14} style={{ color: 'var(--accent-orange)' }} />
+                <Shield size={22} style={{ color: 'var(--accent-orange)' }} />
               </div>
-              <div>
-                <p
-                  style={{
-                    color: 'var(--text-primary)',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    marginBottom: '2px',
-                  }}
-                >
-                  98% Satisfaction
-                </p>
-                <p
-                  style={{
-                    color: 'var(--text-secondary)',
-                    fontSize: '12px',
-                  }}
-                >
-                  Client Retention Rate
-                </p>
-              </div>
+              <p
+                style={{
+                  color: 'var(--text-primary)',
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  lineHeight: 1.4,
+                }}
+              >
+                Quality Assured
+              </p>
             </div>
 
-            <div className="flex items-start gap-3">
+            <div className="flex flex-col items-center gap-3">
               <div
-                className="flex-shrink-0 mt-1"
+                className="flex-shrink-0"
                 style={{
-                  width: '24px',
-                  height: '24px',
+                  width: '44px',
+                  height: '44px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '4px',
+                  borderRadius: '8px',
                   backgroundColor: 'rgba(255, 77, 0, 0.1)',
                 }}
               >
-                <Droplets size={14} style={{ color: 'var(--accent-orange)' }} />
+                <Droplets size={22} style={{ color: 'var(--accent-orange)' }} />
               </div>
-              <div>
-                <p
-                  style={{
-                    color: 'var(--text-primary)',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    marginBottom: '2px',
-                  }}
-                >
-                  Expert Waterproofing
-                </p>
-                <p
-                  style={{
-                    color: 'var(--text-secondary)',
-                    fontSize: '12px',
-                  }}
-                >
-                  Advanced Solutions
-                </p>
-              </div>
+              <p
+                style={{
+                  color: 'var(--text-primary)',
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  lineHeight: 1.4,
+                }}
+              >
+                Expert Waterproofing
+              </p>
             </div>
 
-            <div className="flex items-start gap-3">
+            <div className="flex flex-col items-center gap-3">
               <div
-                className="flex-shrink-0 mt-1"
+                className="flex-shrink-0"
                 style={{
-                  width: '24px',
-                  height: '24px',
+                  width: '44px',
+                  height: '44px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '4px',
+                  borderRadius: '8px',
                   backgroundColor: 'rgba(255, 77, 0, 0.1)',
                 }}
               >
-                <Zap size={14} style={{ color: 'var(--accent-orange)' }} />
+                <Zap size={22} style={{ color: 'var(--accent-orange)' }} />
               </div>
-              <div>
-                <p
-                  style={{
-                    color: 'var(--text-primary)',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    marginBottom: '2px',
-                  }}
-                >
-                  Modern Infrastructure
-                </p>
-                <p
-                  style={{
-                    color: 'var(--text-secondary)',
-                    fontSize: '12px',
-                  }}
-                >
-                  Elevator Systems
-                </p>
-              </div>
+              <p
+                style={{
+                  color: 'var(--text-primary)',
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  lineHeight: 1.4,
+                }}
+              >
+                Modern Systems
+              </p>
             </div>
           </div>
 
@@ -313,14 +273,11 @@ export default function Hero() {
               document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="btn-pill btn-pill-primary animate-scale-in inline-block"
-            style={{ animationDelay: '0.6s', width: 'fit-content' }}
+            style={{ animationDelay: '0.6s' }}
           >
             View Our Projects
           </a>
         </div>
-
-        {/* Right side visual - empty to show canvas pattern and background text */}
-        <div className="hidden lg:flex w-1/2 h-full items-center justify-center" />
       </div>
 
       {/* Scroll indicator */}
