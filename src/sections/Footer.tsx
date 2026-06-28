@@ -4,21 +4,17 @@ const footerLinks = [
   {
     title: 'Services',
     links: [
-      'Project Execution',
-      'Property Valuation',
-      'Waterproofing',
-      'Lift Installation',
-      'Consultancy',
-      'General Trade',
+      { label: 'Our Services', href: '#services' },
+      { label: 'Our Projects', href: '#projects' },
+      { label: 'About Us', href: '#about' },
     ],
   },
   {
-    title: 'Company',
-    links: ['About Us', 'Our Projects', 'Testimonials', 'Careers', 'News'],
-  },
-  {
-    title: 'Legal',
-    links: ['Privacy Policy', 'Terms of Service', 'Cookie Policy'],
+    title: 'Quick Links',
+    links: [
+      { label: 'Contact', href: '#contact' },
+      { label: 'Home', href: '#hero' },
+    ],
   },
 ];
 
@@ -52,9 +48,9 @@ export default function Footer() {
 
       {/* Footer content */}
       <div className="px-[2vw] pb-8 md:pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12 md:mb-16">
           {/* Brand column */}
-          <div className="lg:col-span-2">
+          <div>
             <h3
               className="font-serif text-xl md:text-2xl mb-3 md:mb-4"
               style={{ color: 'var(--text-primary)' }}
@@ -82,7 +78,7 @@ export default function Footer() {
 
           {/* Link columns */}
           {footerLinks.map((group, i) => (
-            <div key={i}>
+            <div key={`footer-group-${i}`}>
               <h4
                 className="text-ui mb-4 md:mb-6"
                 style={{ color: 'var(--text-primary)', fontSize: '10px' }}
@@ -91,12 +87,18 @@ export default function Footer() {
               </h4>
               <ul className="space-y-2 md:space-y-3">
                 {group.links.map((link, j) => (
-                  <li key={j}>
+                  <li key={`footer-link-${i}-${j}`}>
                     <a
-                      href="#"
+                      href={link.href}
                       className="text-xs md:text-sm transition-colors duration-300 hover:translate-x-1 inline-block"
                       style={{ color: 'var(--text-secondary)' }}
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const target = document.querySelector(link.href);
+                        if (target) {
+                          target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
                       onMouseEnter={(e) => {
                         (e.target as HTMLElement).style.color = 'var(--accent-orange)';
                       }}
@@ -104,7 +106,7 @@ export default function Footer() {
                         (e.target as HTMLElement).style.color = 'var(--text-secondary)';
                       }}
                     >
-                      {link}
+                      {link.label}
                     </a>
                   </li>
                 ))}

@@ -199,7 +199,7 @@ export default function Contact() {
                         color: 'var(--text-primary)',
                         fontFamily: 'Manrope, sans-serif',
                       }}
-                      placeholder="+250 788 123 456"
+                      placeholder="+250 788 303 809"
                     />
                   </div>
                   <div>

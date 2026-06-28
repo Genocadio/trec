@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { LayoutGrid, Activity, ArrowUpRight, TrendingUp, Droplets, HardHat, Building2, Scale } from 'lucide-react';
+import { LayoutGrid, Activity, ArrowUpRight, Droplets, HardHat, Building2, Scale } from 'lucide-react';
 
 const services = [
   { title: 'Project Execution', icon: HardHat, desc: 'End-to-end construction management with precision and quality.' },
@@ -14,11 +14,10 @@ const services = [
   { title: 'Consultancy', icon: LayoutGrid, desc: 'Expert real estate and construction consulting services.' },
 ];
 
-const chartData = [35, 42, 55, 48, 62, 75, 68, 82, 90, 85, 95, 100];
-
 export default function Services() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const chartCanvasRef = useRef<HTMLCanvasElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const dragStateRef = useRef({ isDragging: false, startX: 0, currentRotation: 0 });
 
   // Dot grid + pulsing circle animation
   useEffect(() => {
@@ -113,73 +112,91 @@ export default function Services() {
     };
   }, []);
 
-  // Line chart
+  // Carousel drag handler
   useEffect(() => {
-    const canvas = chartCanvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const carousel = carouselRef.current;
+    if (!carousel) return;
 
-    const dpr = Math.min(window.devicePixelRatio, 2);
-    const w = canvas.offsetWidth;
-    const h = canvas.offsetHeight;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    ctx.scale(dpr, dpr);
+    const handleMouseDown = (e: MouseEvent) => {
+      dragStateRef.current.isDragging = true;
+      dragStateRef.current.startX = e.clientX;
+    };
 
-    const padding = 20;
-    const chartW = w - padding * 2;
-    const chartH = h - padding * 2;
-    const maxVal = Math.max(...chartData);
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!dragStateRef.current.isDragging || !carousel) return;
 
-    ctx.clearRect(0, 0, w, h);
+      const delta = e.clientX - dragStateRef.current.startX;
+      const rotationDelta = (delta / window.innerWidth) * 180;
+      dragStateRef.current.currentRotation += rotationDelta;
 
-    // Grid lines
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-    ctx.lineWidth = 0.5;
-    for (let i = 0; i <= 4; i++) {
-      const y = padding + (chartH / 4) * i;
-      ctx.beginPath();
-      ctx.moveTo(padding, y);
-      ctx.lineTo(padding + chartW, y);
-      ctx.stroke();
-    }
+      const inner = carousel.querySelector('[style*="animation"]') as HTMLElement;
+      if (inner) {
+        inner.style.animation = 'none';
+        inner.style.transform = `rotateY(${dragStateRef.current.currentRotation}deg)`;
+      }
 
-    // Area gradient
-    const areaGrad = ctx.createLinearGradient(0, padding, 0, padding + chartH);
-    areaGrad.addColorStop(0, 'rgba(255, 77, 0, 0.3)');
-    areaGrad.addColorStop(1, 'rgba(255, 77, 0, 0.0)');
+      dragStateRef.current.startX = e.clientX;
+    };
 
-    // Build path
-    const points = chartData.map((val, i) => ({
-      x: padding + (i / (chartData.length - 1)) * chartW,
-      y: padding + chartH - (val / maxVal) * chartH,
-    }));
+    const handleMouseUp = () => {
+      dragStateRef.current.isDragging = false;
+      const inner = carousel.querySelector('[style*="animation"]') as HTMLElement;
+      if (inner) {
+        inner.style.animation = 'carouselSpin 60s linear infinite';
+        inner.style.transform = 'none';
+      }
+    };
 
-    // Fill area
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, padding + chartH);
-    for (const p of points) ctx.lineTo(p.x, p.y);
-    ctx.lineTo(points[points.length - 1].x, padding + chartH);
-    ctx.closePath();
-    ctx.fillStyle = areaGrad;
-    ctx.fill();
+    carousel.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
 
-    // Stroke line
-    ctx.beginPath();
-    for (const p of points) ctx.lineTo(p.x, p.y);
-    ctx.strokeStyle = '#ff4d00';
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    // Touch support
+    const handleTouchStart = (e: TouchEvent) => {
+      dragStateRef.current.isDragging = true;
+      dragStateRef.current.startX = e.touches[0].clientX;
+    };
 
-    // Data points
-    for (const p of points) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = '#ff4d00';
-      ctx.fill();
-    }
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!dragStateRef.current.isDragging || !carousel) return;
+
+      const delta = e.touches[0].clientX - dragStateRef.current.startX;
+      const rotationDelta = (delta / window.innerWidth) * 180;
+      dragStateRef.current.currentRotation += rotationDelta;
+
+      const inner = carousel.querySelector('[style*="animation"]') as HTMLElement;
+      if (inner) {
+        inner.style.animation = 'none';
+        inner.style.transform = `rotateY(${dragStateRef.current.currentRotation}deg)`;
+      }
+
+      dragStateRef.current.startX = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+      dragStateRef.current.isDragging = false;
+      const inner = carousel.querySelector('[style*="animation"]') as HTMLElement;
+      if (inner) {
+        inner.style.animation = 'carouselSpin 60s linear infinite';
+        inner.style.transform = 'none';
+      }
+    };
+
+    carousel.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      carousel.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      carousel.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
   }, []);
+
+
 
   return (
     <section
@@ -252,18 +269,20 @@ export default function Services() {
           <div className="lg:w-3/5 relative animate-fade-in-right" style={{ animationDelay: '0.4s' }}>
             {/* 3D Carousel */}
             <div
-              className="relative mb-12"
+              ref={carouselRef}
+              className="relative mb-12 cursor-grab active:cursor-grabbing"
               style={{
                 perspective: '900px',
                 transformStyle: 'preserve-3d',
                 height: '320px',
+                userSelect: 'none',
               }}
             >
               <div
                 className="absolute inset-0 flex items-center justify-center"
                 style={{
                   transformStyle: 'preserve-3d',
-                  animation: 'carouselSpin 40s linear infinite',
+                  animation: 'carouselSpin 60s linear infinite',
                 }}
               >
                 {services.map((service, i) => {
@@ -307,26 +326,8 @@ export default function Services() {
               </div>
             </div>
 
-            {/* Data panels */}
+            {/* Feature Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {/* Metrics */}
-              <div className="glass-panel p-4 md:p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <TrendingUp size={16} style={{ color: 'var(--accent-orange)' }} />
-                  <span
-                    className="text-ui"
-                    style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '11px' }}
-                  >
-                    Valuation Trends
-                  </span>
-                </div>
-                <canvas
-                  ref={chartCanvasRef}
-                  style={{ width: '100%', height: '140px' }}
-                />
-              </div>
-
-              {/* Feature Cards */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="glass-panel p-5 flex flex-col justify-start">
                   <h4
