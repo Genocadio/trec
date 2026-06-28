@@ -186,16 +186,38 @@ export default function Services() {
       id="services"
       className="relative w-full overflow-hidden"
       style={{
-        backgroundColor: 'var(--bg-dark)',
-        paddingTop: '10vh',
+        background: 'linear-gradient(135deg, #0f1419 0%, #1a1f28 20%, #151a23 50%, #0d1117 80%, #0a0c10 100%)',
+        paddingTop: '8vh',
         paddingBottom: '10vh',
       }}
     >
-      {/* Background dot grid canvas */}
+      {/* Background dot grid canvas - responsive */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ zIndex: 0 }}
+        style={{ zIndex: 0, overflow: 'hidden' }}
+      />
+
+      {/* Top fade gradient from light section */}
+      <div
+        className="absolute top-0 left-0 right-0"
+        style={{
+          zIndex: 0.5,
+          height: '12vh',
+          background: 'linear-gradient(to bottom, rgba(245,245,245,0.1), transparent)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Bottom fade gradient to projects section */}
+      <div
+        className="absolute bottom-0 left-0 right-0"
+        style={{
+          zIndex: 0.5,
+          height: '15vh',
+          background: 'linear-gradient(to top, rgba(245,245,245,0.08), transparent)',
+          pointerEvents: 'none',
+        }}
       />
 
       <div className="relative px-[2vw]" style={{ zIndex: 1 }}>
@@ -304,63 +326,63 @@ export default function Services() {
                 />
               </div>
 
-              {/* Stats */}
+              {/* Feature Cards */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="glass-panel p-5 flex flex-col justify-center">
-                  <span
-                    className="text-3xl font-serif"
-                    style={{ color: 'var(--accent-orange)' }}
+                <div className="glass-panel p-5 flex flex-col justify-start">
+                  <h4
+                    className="font-sans text-sm font-semibold mb-2"
+                    style={{ color: 'white' }}
                   >
-                    200+
-                  </span>
-                  <span
-                    className="text-xs mt-1"
-                    style={{ color: 'rgba(255, 255, 255, 0.5)' }}
+                    Proven Excellence
+                  </h4>
+                  <p
+                    className="text-xs"
+                    style={{ color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.5 }}
                   >
-                    Projects Completed
-                  </span>
+                    Trusted expertise delivering premium results across Rwanda
+                  </p>
                 </div>
-                <div className="glass-panel p-5 flex flex-col justify-center">
-                  <span
-                    className="text-3xl font-serif"
-                    style={{ color: 'var(--accent-orange)' }}
+                <div className="glass-panel p-5 flex flex-col justify-start">
+                  <h4
+                    className="font-sans text-sm font-semibold mb-2"
+                    style={{ color: 'white' }}
                   >
-                    15+
-                  </span>
-                  <span
-                    className="text-xs mt-1"
-                    style={{ color: 'rgba(255, 255, 255, 0.5)' }}
+                    Quality Focus
+                  </h4>
+                  <p
+                    className="text-xs"
+                    style={{ color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.5 }}
                   >
-                    Years Experience
-                  </span>
+                    Every project meets rigorous standards and specifications
+                  </p>
                 </div>
-                <div className="glass-panel p-5 flex flex-col justify-center">
-                  <span
-                    className="text-3xl font-serif"
-                    style={{ color: 'var(--accent-orange)' }}
+                <div className="glass-panel p-5 flex flex-col justify-start">
+                  <h4
+                    className="font-sans text-sm font-semibold mb-2"
+                    style={{ color: 'white' }}
                   >
-                    50+
-                  </span>
-                  <span
-                    className="text-xs mt-1"
-                    style={{ color: 'rgba(255, 255, 255, 0.5)' }}
+                    On Time Delivery
+                  </h4>
+                  <p
+                    className="text-xs"
+                    style={{ color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.5 }}
                   >
-                    Expert Team
-                  </span>
+                    Reliable completion with transparent project timelines
+                  </p>
                 </div>
-                <div className="glass-panel p-5 flex flex-col justify-center">
-                  <span
-                    className="text-3xl font-serif"
-                    style={{ color: 'var(--accent-orange)' }}
+                <div className="glass-panel p-5 flex flex-col justify-start">
+                  <h4
+                    className="font-sans text-sm font-semibold mb-2"
+                    style={{ color: 'white' }}
                   >
-                    98%
-                  </span>
-                  <span
-                    className="text-xs mt-1"
-                    style={{ color: 'rgba(255, 255, 255, 0.5)' }}
+                    Innovation Driven
+                  </h4>
+                  <p
+                    className="text-xs"
+                    style={{ color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.5 }}
                   >
-                    Client Satisfaction
-                  </span>
+                    Modern solutions and cutting-edge techniques in construction
+                  </p>
                 </div>
               </div>
             </div>

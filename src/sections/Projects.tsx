@@ -134,21 +134,35 @@ export default function Projects() {
       id="projects"
       ref={sectionRef}
       style={{
-        backgroundColor: 'var(--bg-primary)',
-        paddingTop: '15vh',
+        background: 'linear-gradient(135deg, #f0f6fb 0%, #e8f2f9 15%, #f5f9fc 30%, #eef4fa 45%, #f2f8fb 60%, #eff6fb 75%, #f5f9fc 90%, #eef6fa 100%)',
+        paddingTop: '12vh',
+        position: 'relative',
       }}
     >
+      {/* Top fade from dark section */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '18vh',
+          background: 'linear-gradient(to bottom, rgba(10,10,10,0.15), transparent)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
       {/* Section header */}
-      <div className="px-[2vw] mb-12 md:mb-16 animate-fade-in-down" style={{ animationDelay: '0.2s' }}>
+      <div className="px-[2vw] mb-6 md:mb-8 lg:mb-10 animate-fade-in-down relative" style={{ animationDelay: '0.2s', zIndex: 2 }}>
         <p
-          className="text-ui mb-4"
-          style={{ color: 'var(--text-secondary)' }}
+          className="text-ui mb-2"
+          style={{ color: 'var(--text-secondary)', fontSize: '12px', letterSpacing: '0.1em' }}
         >
           Featured Work
         </p>
         <h2
           className="font-serif text-h2 text-3xl md:text-5xl lg:text-6xl"
-          style={{ color: 'var(--text-primary)' }}
+          style={{ color: 'var(--text-primary)', lineHeight: 1.1 }}
         >
           Our Projects
         </h2>
@@ -158,7 +172,7 @@ export default function Projects() {
       <div
         ref={featuredRef}
         className="relative w-full overflow-hidden"
-        style={{ height: '60vh', minHeight: '500px' }}
+        style={{ height: '60vh', minHeight: '500px', zIndex: 2 }}
       >
         <div
           ref={featuredImageRef}
@@ -222,8 +236,8 @@ export default function Projects() {
 
       {/* Project grid */}
       <div
-        className="px-[2vw] py-16 md:py-24"
-        style={{ backgroundColor: 'var(--bg-primary)' }}
+        className="px-[2vw] py-16 md:py-24 relative"
+        style={{ zIndex: 2 }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {projects.slice(1).map((project, i) => (
