@@ -186,49 +186,86 @@ export default function OrangeCurve() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
-      style={{ height: '100vh' }}
+      className="relative w-full overflow-hidden"
+      style={{
+        height: '100vh',
+        minHeight: '600px',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #121212 50%, #0f0f0f 75%, #0a0a0a 100%)',
+      }}
     >
-      {/* WebGL Canvas - subtle background */}
+      {/* WebGL Canvas - subtle background with proper scaling */}
       <div
         ref={canvasRef}
-        className="absolute inset-0 opacity-40"
-        style={{ zIndex: 1 }}
+        className="absolute inset-0 w-full h-full"
+        style={{
+          zIndex: 1,
+          opacity: 0.35,
+          overflow: 'hidden',
+        }}
       />
 
-      {/* Dark overlay for text visibility */}
+      {/* Dark overlay for text visibility with gradient fade */}
       <div
         className="absolute inset-0"
         style={{
           zIndex: 1.5,
-          background: 'linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.4) 100%)',
+          background: 'linear-gradient(135deg, rgba(10,10,10,0.5) 0%, rgba(15,15,15,0.3) 50%, rgba(10,10,10,0.5) 100%)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Top gradient fade from light to dark */}
+      <div
+        className="absolute top-0 left-0 right-0"
+        style={{
+          zIndex: 1.2,
+          height: '15vh',
+          background: 'linear-gradient(to bottom, var(--bg-primary), transparent)',
+          opacity: 0.4,
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Bottom gradient fade from dark to light */}
+      <div
+        className="absolute bottom-0 left-0 right-0"
+        style={{
+          zIndex: 1.2,
+          height: '20vh',
+          background: 'linear-gradient(to top, rgba(245,245,245,0.15), transparent)',
+          pointerEvents: 'none',
         }}
       />
 
       {/* Overlay text */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-[2vw]"
         style={{ zIndex: 2 }}
       >
         <h2
-          className="font-serif text-h2 text-center text-2xl md:text-4xl lg:text-6xl px-[2vw] max-w-4xl animate-fade-in-down"
+          className="font-serif text-center animate-fade-in-down"
           style={{
             color: '#ffffff',
-            textShadow: '0 6px 24px rgba(0, 0, 0, 0.6), 0 0 50px rgba(15, 139, 174, 0.4)',
+            textShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 0 60px rgba(15, 139, 174, 0.3)',
             letterSpacing: '-0.01em',
-            lineHeight: 1.2,
+            lineHeight: 1.1,
             animationDelay: '0.1s',
+            fontSize: 'clamp(1.75rem, 5vw, 4rem)',
+            maxWidth: '90vw',
           }}
         >
           We build spaces that define the skyline of Kigali
         </h2>
         <p
-          className="font-sans text-ui mt-4 md:mt-8 text-xs md:text-base max-w-2xl px-[2vw] animate-fade-in-up"
+          className="font-sans mt-4 md:mt-6 lg:mt-8 text-center max-w-2xl animate-fade-in-up"
           style={{
             color: '#ffffff',
-            textShadow: '0 3px 12px rgba(0, 0, 0, 0.6)',
+            textShadow: '0 4px 16px rgba(0, 0, 0, 0.6)',
             fontWeight: 300,
             animationDelay: '0.3s',
+            fontSize: 'clamp(0.875rem, 2vw, 1.125rem)',
+            letterSpacing: '0.05em',
+            lineHeight: 1.6,
           }}
         >
           From ground-breaking foundations to waterproofing precision, our mission is structural excellence.

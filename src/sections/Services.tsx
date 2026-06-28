@@ -186,16 +186,38 @@ export default function Services() {
       id="services"
       className="relative w-full overflow-hidden"
       style={{
-        backgroundColor: 'var(--bg-dark)',
-        paddingTop: '10vh',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 20%, #121212 50%, #0f0f0f 80%, #0a0a0a 100%)',
+        paddingTop: '8vh',
         paddingBottom: '10vh',
       }}
     >
-      {/* Background dot grid canvas */}
+      {/* Background dot grid canvas - responsive */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ zIndex: 0 }}
+        style={{ zIndex: 0, overflow: 'hidden' }}
+      />
+
+      {/* Top fade gradient from light section */}
+      <div
+        className="absolute top-0 left-0 right-0"
+        style={{
+          zIndex: 0.5,
+          height: '12vh',
+          background: 'linear-gradient(to bottom, rgba(245,245,245,0.1), transparent)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Bottom fade gradient to projects section */}
+      <div
+        className="absolute bottom-0 left-0 right-0"
+        style={{
+          zIndex: 0.5,
+          height: '15vh',
+          background: 'linear-gradient(to top, rgba(245,245,245,0.08), transparent)',
+          pointerEvents: 'none',
+        }}
       />
 
       <div className="relative px-[2vw]" style={{ zIndex: 1 }}>
