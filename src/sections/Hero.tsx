@@ -1,272 +1,82 @@
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import gsap from 'gsap';
-
-// Perlin noise implementation for GLSL
-const perlinNoiseGLSL = `
-  vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-  vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-  vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-  vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
-  vec3 fade(vec3 t) { return t*t*t*(t*(t*6.0-15.0)+10.0); }
-
-  float pnoise(vec3 P, vec3 rep) {
-    vec3 Pi0 = mod(floor(P), rep);
-    vec3 Pi1 = mod(Pi0 + vec3(1.0), rep);
-    Pi0 = mod289(Pi0);
-    Pi1 = mod289(Pi1);
-    vec3 Pf0 = fract(P);
-    vec3 Pf1 = Pf0 - vec3(1.0);
-    vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-    vec4 iy = vec4(Pi0.yy, Pi1.yy);
-    vec4 iz0 = Pi0.zzzz;
-    vec4 iz1 = Pi1.zzzz;
-    vec4 ixy = permute(permute(ix) + iy);
-    vec4 ixy0 = permute(ixy + iz0);
-    vec4 ixy1 = permute(ixy + iz1);
-    vec4 gx0 = ixy0 * (1.0 / 7.0);
-    vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
-    gx0 = fract(gx0);
-    vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
-    vec4 sz0 = step(gz0, vec4(0.0));
-    gx0 -= sz0 * (step(0.0, gx0) - 0.5);
-    gy0 -= sz0 * (step(0.0, gy0) - 0.5);
-    vec4 gx1 = ixy1 * (1.0 / 7.0);
-    vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
-    gx1 = fract(gx1);
-    vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
-    vec4 sz1 = step(gz1, vec4(0.0));
-    gx1 -= sz1 * (step(0.0, gx1) - 0.5);
-    gy1 -= sz1 * (step(0.0, gy1) - 0.5);
-    vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
-    vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
-    vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
-    vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
-    vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
-    vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
-    vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
-    vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
-    vec4 norm0 = taylorInvSqrt(vec4(dot(g000,g000), dot(g010,g010), dot(g100,g100), dot(g110,g110)));
-    g000 *= norm0.x; g010 *= norm0.y; g100 *= norm0.z; g110 *= norm0.w;
-    vec4 norm1 = taylorInvSqrt(vec4(dot(g001,g001), dot(g011,g011), dot(g101,g101), dot(g111,g111)));
-    g001 *= norm1.x; g011 *= norm1.y; g101 *= norm1.z; g111 *= norm1.w;
-    float n000 = dot(g000, Pf0);
-    float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
-    float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
-    float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
-    float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
-    float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
-    float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
-    float n111 = dot(g111, Pf1);
-    vec3 fade_xyz = fade(Pf0);
-    vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
-    vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
-    return 2.2 * n_xyz;
-  }
-`;
-
-const vertexShader = `
-  ${perlinNoiseGLSL}
-
-  varying float vDistort;
-  uniform float uFrequency;
-  uniform float uAmplitude;
-  uniform float uDensity;
-  uniform float uStrength;
-
-  mat3 rotation3dY(float angle) {
-    float s = sin(angle);
-    float c = cos(angle);
-    return mat3(
-      c, 0.0, -s,
-      0.0, 1.0, 0.0,
-      s, 0.0, c
-    );
-  }
-
-  vec3 rotateY(vec3 v, float angle) {
-    return rotation3dY(angle) * v;
-  }
-
-  void main() {
-    float distort = pnoise(normal * uDensity, vec3(10.)) * uStrength;
-    float offset = distort * uFrequency;
-    vec3 pos = position + normal * offset;
-    pos = rotateY(pos, distort * uAmplitude * 3.14);
-    vDistort = distort;
-    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-    gl_Position = projectionMatrix * mvPosition;
-  }
-`;
-
-const fragmentShader = `
-  varying float vDistort;
-  uniform float uDeepPurple;
-  uniform float uOpacity;
-
-  void main() {
-    vec3 color;
-    if (uDeepPurple == 1.0) {
-      color = vec3(1.0 * vDistort, 0.6, 0.0);
-    } else {
-      color = vec3(1.0, 0.5 * vDistort, 0.0);
-    }
-    gl_FragColor = vec4(color, clamp(uOpacity, 0.0, 1.0));
-  }
-`;
+import { Building2, Droplets, Zap, Shield } from 'lucide-react';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasContainerRef = useRef<HTMLDivElement>(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const isPressedRef = useRef(false);
-  const uniformsRef = useRef<{
-    uFrequency: { value: number };
-    uAmplitude: { value: number };
-    uDensity: { value: number };
-    uStrength: { value: number };
-    uDeepPurple: { value: number };
-    uOpacity: { value: number };
-  } | null>(null);
 
   useEffect(() => {
-    const container = canvasContainerRef.current;
-    if (!container) return;
+    // Draw animated dot pattern on right side
+    const canvas = containerRef.current?.querySelector('canvas') as HTMLCanvasElement;
+    if (!canvas) return;
 
-    // Scene setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      container.offsetWidth / container.offsetHeight,
-      0.1,
-      100
-    );
-    camera.position.z = 3;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(container.offsetWidth, container.offsetHeight);
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-    renderer.domElement.style.display = 'block';
-    container.appendChild(renderer.domElement);
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    let w = canvas.offsetWidth;
+    let h = canvas.offsetHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.scale(dpr, dpr);
 
-    // Geometry
-    const geometry = new THREE.IcosahedronGeometry(1, 64);
-    const uniforms = {
-      uFrequency: { value: 0 },
-      uAmplitude: { value: 4 },
-      uDensity: { value: 1 },
-      uStrength: { value: 0 },
-      uDeepPurple: { value: 1.0 },
-      uOpacity: { value: 0.1 },
-    };
-    uniformsRef.current = uniforms;
-
-    const material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms,
-      transparent: true,
-      wireframe: true,
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    // Mouse handlers
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
-
-    const handleMouseDown = () => {
-      isPressedRef.current = true;
-      gsap.to(uniforms.uFrequency, { value: 4, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uAmplitude, { value: 4.5, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uDensity, { value: 1.5, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uStrength, { value: 1.1, duration: 1, ease: 'expo.out' });
-    };
-
-    const handleMouseUp = () => {
-      isPressedRef.current = false;
-      gsap.to(uniforms.uFrequency, { value: 0, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uAmplitude, { value: 4, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uDensity, { value: 1, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uStrength, { value: 0, duration: 1, ease: 'expo.out' });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-
-    // Touch handlers for mobile
-    const handleTouchStart = () => {
-      isPressedRef.current = true;
-      gsap.to(uniforms.uFrequency, { value: 4, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uAmplitude, { value: 4.5, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uDensity, { value: 1.5, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uStrength, { value: 1.1, duration: 1, ease: 'expo.out' });
-    };
-
-    const handleTouchEnd = () => {
-      isPressedRef.current = false;
-      gsap.to(uniforms.uFrequency, { value: 0, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uAmplitude, { value: 4, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uDensity, { value: 1, duration: 1, ease: 'expo.out' });
-      gsap.to(uniforms.uStrength, { value: 0, duration: 1, ease: 'expo.out' });
-    };
-
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchend', handleTouchEnd);
-
-    // Animation loop
-    const clock = new THREE.Clock();
     let animId: number;
+    let time = 0;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      const time = clock.getElapsedTime();
+      time += 0.01;
+      ctx.clearRect(0, 0, w, h);
 
-      // Mouse rotation lerp
-      mesh.rotation.x += (mouseRef.current.y * 0.5 - mesh.rotation.x) * 0.1;
-      mesh.rotation.y += (mouseRef.current.x * 0.5 - mesh.rotation.y) * 0.1;
+      const dotSize = 4;
+      const spacing = 24;
+      const cols = Math.ceil(w / spacing);
+      const rows = Math.ceil(h / spacing);
 
-      // Wobble
-      mesh.rotation.x += Math.cos(time) * 0.005;
-      mesh.rotation.y += Math.sin(time) * 0.005;
+      // Draw animated dot grid
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = c * spacing + spacing / 2;
+          const y = r * spacing + spacing / 2;
 
-      renderer.render(scene, camera);
+          const distance = Math.sqrt((x - w / 2) ** 2 + (y - h / 2) ** 2);
+          const wave = Math.sin(distance * 0.01 - time) * 0.5 + 0.5;
+
+          const opacity = 0.1 + wave * 0.2;
+          ctx.fillStyle = `rgba(255, 77, 0, ${opacity})`;
+          ctx.beginPath();
+          ctx.arc(x, y, dotSize * (0.7 + wave * 0.3), 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Draw accent circle
+      const pulseRadius = 80 + Math.sin(time * 2) * 10;
+      const grad = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, pulseRadius);
+      grad.addColorStop(0, 'rgba(255, 77, 0, 0.15)');
+      grad.addColorStop(0.7, 'rgba(255, 77, 0, 0.05)');
+      grad.addColorStop(1, 'rgba(255, 77, 0, 0)');
+      ctx.beginPath();
+      ctx.arc(w / 2, h / 2, pulseRadius, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
     };
+
     animate();
 
-    // Resize handler
     const handleResize = () => {
-      if (!container) return;
-      camera.aspect = container.offsetWidth / container.offsetHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.offsetWidth, container.offsetHeight);
+      w = canvas.offsetWidth;
+      h = canvas.offsetHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
     };
+
     window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('resize', handleResize);
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
     };
   }, []);
 
@@ -277,53 +87,225 @@ export default function Hero() {
       className="relative w-full overflow-hidden"
       style={{ height: '100vh', backgroundColor: 'var(--bg-primary)' }}
     >
-      {/* Massive background text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+      {/* Background canvas for animated pattern */}
+      <canvas
+        className="absolute inset-0 w-full h-full"
+        style={{ zIndex: 0, opacity: 0.4 }}
+      />
+
+      {/* Large background text */}
+      <div className="absolute inset-0 flex items-center justify-end pointer-events-none select-none pr-[5vw]">
         <h1
-          className="font-serif text-display animate-fade-in-down"
+          className="font-serif text-display animate-fade-in-right"
           style={{
-            color: 'rgba(15, 139, 174, 0.08)',
-            fontSize: 'clamp(6rem, 22vw, 22rem)',
-            animationDelay: '0.2s',
+            color: 'rgba(15, 139, 174, 0.06)',
+            fontSize: 'clamp(4rem, 18vw, 20rem)',
+            animationDelay: '0.1s',
+            textAlign: 'right',
+            lineHeight: 1,
           }}
         >
-          TREC
+          Building
+          <br />
+          Excellence
         </h1>
       </div>
 
-      {/* 3D Canvas container */}
-      <div
-        ref={canvasContainerRef}
-        className="absolute inset-0 flex items-center justify-center"
-        style={{ zIndex: 2 }}
-      />
-
-      {/* Content overlay */}
-      <div
-        className="absolute bottom-0 left-0 w-full px-[2vw] pb-12 md:pb-16 lg:pb-24"
-        style={{ zIndex: 10 }}
-      >
-        <div className="max-w-4xl">
+      <div className="relative flex items-center justify-between h-full px-[2vw]" style={{ zIndex: 10 }}>
+        {/* Left Content */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center max-w-xl">
           <p
-            className="font-sans text-ui mb-4 md:mb-6 animate-fade-in-up"
-            style={{ 
+            className="text-ui mb-4 md:mb-6 animate-fade-in-up"
+            style={{
               color: 'var(--text-secondary)',
-              animationDelay: '0.4s',
+              animationDelay: '0.2s',
+              fontSize: '12px',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
             }}
           >
             Talent Real Estate Company Ltd
           </p>
+
           <h2
-            className="font-sans text-xl md:text-3xl lg:text-4xl font-light mb-6 md:mb-8 animate-fade-in-up"
+            className="font-serif mb-6 md:mb-8 animate-fade-in-up leading-tight"
             style={{
               color: 'var(--text-primary)',
-              letterSpacing: '-0.01em',
-              lineHeight: 1.2,
-              animationDelay: '0.6s',
+              fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+              animationDelay: '0.3s',
+              fontWeight: 300,
             }}
           >
-            Architectural Execution &amp; Consultancy
+            Architectural Execution &amp; Consultancy Services
           </h2>
+
+          <p
+            className="text-body mb-8 md:mb-10 animate-fade-in-up"
+            style={{
+              color: 'var(--text-secondary)',
+              fontSize: '15px',
+              lineHeight: 1.6,
+              animationDelay: '0.4s',
+              maxWidth: '450px',
+            }}
+          >
+            With over 15 years of experience, TREC delivers comprehensive real estate and construction solutions across Rwanda. From project execution to expert consultancy, we build properties that define communities.
+          </p>
+
+          {/* Key highlights */}
+          <div
+            className="grid grid-cols-2 gap-4 mb-8 md:mb-12 animate-fade-in-up"
+            style={{ animationDelay: '0.5s' }}
+          >
+            <div className="flex items-start gap-3">
+              <div
+                className="flex-shrink-0 mt-1"
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '4px',
+                  backgroundColor: 'rgba(255, 77, 0, 0.1)',
+                }}
+              >
+                <Building2 size={14} style={{ color: 'var(--accent-orange)' }} />
+              </div>
+              <div>
+                <p
+                  style={{
+                    color: 'var(--text-primary)',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    marginBottom: '2px',
+                  }}
+                >
+                  200+ Projects
+                </p>
+                <p
+                  style={{
+                    color: 'var(--text-secondary)',
+                    fontSize: '12px',
+                  }}
+                >
+                  Completed Successfully
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div
+                className="flex-shrink-0 mt-1"
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '4px',
+                  backgroundColor: 'rgba(255, 77, 0, 0.1)',
+                }}
+              >
+                <Shield size={14} style={{ color: 'var(--accent-orange)' }} />
+              </div>
+              <div>
+                <p
+                  style={{
+                    color: 'var(--text-primary)',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    marginBottom: '2px',
+                  }}
+                >
+                  98% Satisfaction
+                </p>
+                <p
+                  style={{
+                    color: 'var(--text-secondary)',
+                    fontSize: '12px',
+                  }}
+                >
+                  Client Retention Rate
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div
+                className="flex-shrink-0 mt-1"
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '4px',
+                  backgroundColor: 'rgba(255, 77, 0, 0.1)',
+                }}
+              >
+                <Droplets size={14} style={{ color: 'var(--accent-orange)' }} />
+              </div>
+              <div>
+                <p
+                  style={{
+                    color: 'var(--text-primary)',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    marginBottom: '2px',
+                  }}
+                >
+                  Expert Waterproofing
+                </p>
+                <p
+                  style={{
+                    color: 'var(--text-secondary)',
+                    fontSize: '12px',
+                  }}
+                >
+                  Advanced Solutions
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div
+                className="flex-shrink-0 mt-1"
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '4px',
+                  backgroundColor: 'rgba(255, 77, 0, 0.1)',
+                }}
+              >
+                <Zap size={14} style={{ color: 'var(--accent-orange)' }} />
+              </div>
+              <div>
+                <p
+                  style={{
+                    color: 'var(--text-primary)',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    marginBottom: '2px',
+                  }}
+                >
+                  Modern Infrastructure
+                </p>
+                <p
+                  style={{
+                    color: 'var(--text-secondary)',
+                    fontSize: '12px',
+                  }}
+                >
+                  Elevator Systems
+                </p>
+              </div>
+            </div>
+          </div>
+
           <a
             href="#projects"
             onClick={(e) => {
@@ -331,26 +313,31 @@ export default function Hero() {
               document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="btn-pill btn-pill-primary animate-scale-in inline-block"
-            style={{ animationDelay: '0.8s' }}
+            style={{ animationDelay: '0.6s', width: 'fit-content' }}
           >
-            Explore Projects
+            View Our Projects
           </a>
         </div>
+
+        {/* Right side visual - empty to show canvas pattern and background text */}
+        <div className="hidden lg:flex w-1/2 h-full items-center justify-center" />
       </div>
 
       {/* Scroll indicator */}
       <div
-        className="absolute bottom-6 md:bottom-8 right-[2vw] flex flex-col items-center gap-2 animate-float"
-        style={{ zIndex: 10 }}
+        className="absolute bottom-6 md:bottom-8 left-[2vw] flex flex-col items-center gap-2 animate-float"
+        style={{ zIndex: 20 }}
       >
         <span
           className="text-ui text-xs md:text-sm"
           style={{
             color: 'var(--text-secondary)',
             writingMode: 'vertical-rl',
+            fontSize: '11px',
+            letterSpacing: '0.05em',
           }}
         >
-          Scroll
+          Scroll to explore
         </span>
         <div
           className="w-[1px] h-8 md:h-12 animate-pulse"
