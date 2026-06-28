@@ -190,7 +190,7 @@ export default function OrangeCurve() {
       style={{
         height: '100vh',
         minHeight: '600px',
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #121212 50%, #0f0f0f 75%, #0a0a0a 100%)',
+        background: 'linear-gradient(135deg, #0d1117 0%, #16202b 25%, #0f1b28 50%, #0a1420 75%, #050a0f 100%)',
       }}
     >
       {/* WebGL Canvas - subtle background with proper scaling */}
@@ -209,7 +209,7 @@ export default function OrangeCurve() {
         className="absolute inset-0"
         style={{
           zIndex: 1.5,
-          background: 'linear-gradient(135deg, rgba(10,10,10,0.5) 0%, rgba(15,15,15,0.3) 50%, rgba(10,10,10,0.5) 100%)',
+          background: 'linear-gradient(135deg, rgba(13,17,23,0.4) 0%, rgba(22,32,43,0.25) 50%, rgba(13,17,23,0.4) 100%)',
           pointerEvents: 'none',
         }}
       />

@@ -153,16 +153,16 @@ export default function Projects() {
         }}
       />
       {/* Section header */}
-      <div className="px-[2vw] mb-12 md:mb-16 animate-fade-in-down relative" style={{ animationDelay: '0.2s', zIndex: 2 }}>
+      <div className="px-[2vw] mb-6 md:mb-8 lg:mb-10 animate-fade-in-down relative" style={{ animationDelay: '0.2s', zIndex: 2 }}>
         <p
-          className="text-ui mb-4"
-          style={{ color: 'var(--text-secondary)' }}
+          className="text-ui mb-2"
+          style={{ color: 'var(--text-secondary)', fontSize: '12px', letterSpacing: '0.1em' }}
         >
           Featured Work
         </p>
         <h2
           className="font-serif text-h2 text-3xl md:text-5xl lg:text-6xl"
-          style={{ color: 'var(--text-primary)' }}
+          style={{ color: 'var(--text-primary)', lineHeight: 1.1 }}
         >
           Our Projects
         </h2>
